@@ -3,6 +3,7 @@ import { map } from 'rxjs/operators';
 import { AngularFirestore } from '@angular/fire/compat/firestore'
 import { Observable } from 'rxjs';
 import { Reservation } from '../models/reservation';
+import { Client } from '../models/client';
 
 @Injectable({
   providedIn: 'root'
@@ -29,6 +30,20 @@ export class ReservationService {
       })
     )
   }
+
+  //obtener clientes
+  public getClients(): Observable<Client[]> {
+    return this.firestore.collection('client').snapshotChanges().pipe(
+      map(actions => {
+        return actions.map(a => {
+          const data = a.payload.doc.data() as Client
+          const id = a.payload.doc.id;
+          return { id, ...data };
+        })
+      })
+    )
+  }
+
   //obtener reservacion(si lo necesitas no estoy seguro creo que solo necesitas todas las reservaciones para mostrar en la venta admin)
   public getReservation(id: string): Observable<Reservation> {
     return this.firestore.collection('reservation').doc(id).snapshotChanges().pipe(
@@ -44,6 +59,10 @@ export class ReservationService {
   public newReservation(reservation: Reservation): Observable<Reservation[]> {
     this.firestore.collection('reservation').add(reservation);
     return this.getReservations();
+  }
+
+  public getDates(): Reservation[]{
+    return this.reservations
   }
 
 }

@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Reservation } from '../models/reservation';
+import { ReservationService } from '../services/reservation.service';
+import { Client } from '../models/client';
 
 @Component({
   selector: 'app-login',
@@ -10,8 +13,14 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class LoginPage implements OnInit {
   public myForm: FormGroup;
   public validationMessages: Object
+  public reservations: Reservation[]
+  public cliente: Client
 
-  constructor(private fB: FormBuilder, private r: Router) { }
+  constructor(private fB: FormBuilder, private r: Router, private rS: ReservationService) { 
+    this.rS.getReservations().subscribe(res => {
+      this.reservations = res
+    })
+  }
 
   ngOnInit() {
     this.myForm = this.fB.group({
@@ -34,28 +43,26 @@ export class LoginPage implements OnInit {
       )
       this.myForm.reset()
       return
-    }
-    /*if (this.myForm.valid) {
-      if (this.reservaValida()) {
-        this.gS.setActive(this.gS.getGuestByPhoneNumber(this.myForm.get('phone').value))
-        this.gS.setLang(this.checkForLang(this.myForm.get('lang').value));
-        this.r.navigate(['/tabs/tab2'], {})
-        this.myForm.reset()
-      } else {
-        let toast = await this.tC.create({
-          message: 'Credenciales no válidas',
-          duration: 2000
-        });
-        toast.present();
-      }
     } else {
-      let toast = await this.tC.create({
-        message: 'Llene los campos correctamente',
-        duration: 2000
-      });
-      toast.present();
-    }*/
+      if (this.reservacionValida){
+        this.r.navigate(
+          ['/add-reservation'],{
+            queryParams: {}
+          }
+        )
+      }
+    }
+  }
 
+  reservacionValida() : boolean{
+    let b = this.myForm.get('phone').value
+    let c = false
+    this.reservations.forEach(a => {
+      if (a.clientphone == b) {
+        return c=true
+      }
+    })
+    return c
   }
 
 }

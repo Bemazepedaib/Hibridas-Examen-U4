@@ -24,6 +24,10 @@ const routes: Routes = [
     path: 'admin-view',
     loadChildren: () => import('./admin-view/admin-view.module').then( m => m.AdminViewPageModule)
   },
+  {
+    path: 'add-reservation',
+    loadChildren: () => import('./add-reservation/add-reservation.module').then( m => m.AddReservationPageModule)
+  },
 ];
 
 @NgModule({

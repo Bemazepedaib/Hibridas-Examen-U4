@@ -1,0 +1,64 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Crear Reservacion</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <form [formGroup]="myForm">
+      <ion-row>
+        <ion-col>Fecha de evento</ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-datetime displayFormat="DD/MM/YYYY" presentation="date" formControlName="date" [min]="now"
+            max="2023-12-31T23:59:59">
+          </ion-datetime>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label>Porcentaje de llenado de alberca</ion-label>
+            <ion-range [ticks]="true" [snaps]="true" [min]="0" max="5" [pin]="true" [pinFormatter]="pinFormatter" formControlName="alber"
+            (ionChange)="alberValue()">
+            </ion-range>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label>¿Brincolin?</ion-label>
+            <ion-toggle slot="end" (ionChange)="toggleValue1()"></ion-toggle>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label>¿Mesa para postres?</ion-label>
+            <ion-toggle slot="end" (ionChange)="toggleValue2()"></ion-toggle>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label>¿Futbolito?</ion-label>
+            <ion-toggle slot="end" (ionChange)="toggleValue3()"></ion-toggle>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="myForm.valid">
+        <ion-col>
+          <ion-label>Total: {{this.total|currency}}</ion-label>
+        </ion-col>
+      </ion-row>
+    </form>
+  </ion-grid>
+  <ion-button expand="block" color="primary" (click)="addReservation()" *ngIf="myForm.valid">
+    <ion-icon name="add"></ion-icon>
+  </ion-button>
+</ion-content>
