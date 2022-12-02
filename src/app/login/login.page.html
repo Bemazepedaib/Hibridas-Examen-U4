@@ -1,0 +1,39 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>login</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <form [formGroup]="myForm">
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label position="floating">Teléfono</ion-label>
+            <ion-input type="password" formControlName="phone"></ion-input>
+          </ion-item>
+          <div>
+            <ng-container *ngFor="let item of validationMessages['phone']">
+              <div class="errormessage" *ngIf="(myForm.get('phone').dirty || 
+                                                myForm.get('phone').touched) && 
+                                                myForm.get('phone').hasError(item.type)">
+                {{item.message}}
+              </div>
+            </ng-container>
+          </div>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <ion-button expand="block" (click)="login()">
+            <ion-icon name="log-in"></ion-icon>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+
+      
+    </form>
+  </ion-grid>
+</ion-content>
